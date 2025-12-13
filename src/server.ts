@@ -22,6 +22,8 @@ initDB();
 app.use("/api/v1/users", userRoute);
 //auth route
 app.use("/api/v1/auth", authRoute);
+// Vehicle Route
+app.use("/api/v1/vehicles", vehicleRoute);
 
 
 app.get("/", (req: Request, res: Response) => {
@@ -53,5 +55,3 @@ app.listen(5000, () => {
 
 
 
-// // Vehicle Route
-// app.use("/api/v1/vehicles", vehicleRoute);
