@@ -1,10 +1,11 @@
 import { Router } from "express";
 import { vehicleController } from "./vehicles.controller";
-import { adminOnly, auth } from "../../middleware/auth";
+import auth from "../../middleware/auth";
+
 
 const router = Router();
 
-router.post('/' ,auth ,adminOnly, vehicleController.createVehicle)//admin but not working
+router.post('/' ,auth("admin"), vehicleController.createVehicle)//admin but not working
 
 router.get('/' , vehicleController.getAllVehicle )
 router.get("/:vehicleId", vehicleController.getVehicleById);

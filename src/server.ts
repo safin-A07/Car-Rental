@@ -6,6 +6,7 @@ import { initDB } from "./database/db";
 import { vehicleRoute } from "./modules/vehicles/vehicles.route";
 import { authRoute } from "./modules/auth/auth.route";
 import dotenv from "dotenv";
+import { bookingRoute } from "./modules/bookings/bookings.route";
 dotenv.config();
 
 
@@ -24,6 +25,8 @@ app.use("/api/v1/users", userRoute);
 app.use("/api/v1/auth", authRoute);
 // Vehicle Route
 app.use("/api/v1/vehicles", vehicleRoute);
+//bookings Route 
+app.use("/api/v1/bookings",bookingRoute)
 
 
 app.get("/", (req: Request, res: Response) => {

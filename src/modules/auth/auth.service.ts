@@ -1,8 +1,9 @@
 import bcrypt from "bcryptjs";
 import { pool } from "../../database/db";
 import jwt from "jsonwebtoken";
+import config from "../../config";
 
-export const secretKey = process.env.JWT_SECRET ||"default" ;
+
 
 //signup
 const signupUserIntoDB = async (payload: any) => {
@@ -60,7 +61,7 @@ const loginUserIntoDB = async (email: string, password: string) => {
     };
 
     
-    const token = jwt.sign(jwtPayload, secretKey, {
+    const token = jwt.sign(jwtPayload, config.jwtSecret as string, {
         expiresIn: "7d",
     });
 

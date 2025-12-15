@@ -1,7 +1,8 @@
 import { Pool } from "pg";
+import config from "../config";
 
 const pool = new Pool({
-    connectionString: 'postgresql://neondb_owner:npg_3PTqkEz2YXdD@ep-rapid-haze-a8k3ga76-pooler.eastus2.azure.neon.tech/neondb?sslmode=require&channel_binding=require'
+    connectionString: config.databaseUrl 
 });
 
 const initDB = async () => {
@@ -27,6 +28,32 @@ const initDB = async () => {
         created_at TIMESTAMP DEFAULT now()
         );`
     )
+    // BOOKINGS
+    await pool.query(`
+        CREATE TABLE IF NOT EXISTS bookings (
+            id SERIAL PRIMARY KEY,
+            customer_id INTEGER NOT NULL,
+            vehicle_id INTEGER NOT NULL,
+            rent_start_date DATE NOT NULL,
+            rent_end_date DATE NOT NULL,
+            total_price NUMERIC(10,2) NOT NULL CHECK (total_price > 0),
+            status VARCHAR(20) NOT NULL CHECK (status IN ('active','cancelled','returned')),
+            created_at TIMESTAMP DEFAULT now(),
+
+            CONSTRAINT fk_customer
+                FOREIGN KEY (customer_id)
+                REFERENCES users(id)
+                ON DELETE RESTRICT,
+
+            CONSTRAINT fk_vehicle
+                FOREIGN KEY (vehicle_id)
+                REFERENCES vehicles(id)
+                ON DELETE RESTRICT,
+
+            CONSTRAINT valid_rent_dates
+                CHECK (rent_end_date > rent_start_date)
+        );
+    `);
 
     console.log("Database initialized");
 }
